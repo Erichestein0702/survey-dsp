@@ -8,6 +8,11 @@ import sys
 import time
 import traceback
 
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout.reconfigure(encoding='utf-8')
+if sys.stderr.encoding != 'utf-8':
+    sys.stderr.reconfigure(encoding='utf-8')
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from common.logger import get_logger, init_logging
