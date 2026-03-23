@@ -102,7 +102,7 @@ Interface operation logic:
 
 ## Data Format Requirements
 
-For detailed format specifications, please refer to [Data Import Format Requirements](./导入文件格式要求.md)
+For detailed format specifications, please refer to [Data Import Format Requirements](./DATA_FORMAT.md)
 
 **Basic Principles**:
 - Text files: One record per line, fields separated by spaces
@@ -144,7 +144,7 @@ SurveyDSP/
 ├── ui/                     # UI components
 ├── run_ui.py               # Program entry point
 ├── ellipsoid_config.json   # Ellipsoid parameter configuration
-└── 导入文件格式要求.md      # Data format specification
+├── DATA_FORMAT.md          # Data format specification
 ```
 
 ---

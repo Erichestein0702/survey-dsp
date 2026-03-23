@@ -1,95 +1,95 @@
 # Contributing to Survey DSP
 
-感谢你考虑为测绘综合实习 DSP 数据处理平台做出贡献！
+Thank you for considering contributing to the Survey DSP Data Processing Platform!
 
-## 如何贡献
+## How to Contribute
 
-### 报告 Bug
+### Reporting Bugs
 
-如果你发现了 bug，请通过 [GitHub Issues](../../issues) 提交报告。提交前请：
+If you find a bug, please submit a report via [GitHub Issues](../../issues). Before submitting:
 
-1. 搜索现有的 issues，确认该问题尚未被报告
-2. 使用 Bug 报告模板，包含以下信息：
-   - 操作系统和 Python 版本
-   - 复现步骤
-   - 期望行为和实际行为
-   - 相关日志或截图
+1. Search existing issues to confirm the problem hasn't been reported
+2. Use the Bug Report template and include:
+   - Operating system and Python version
+   - Steps to reproduce
+   - Expected behavior and actual behavior
+   - Relevant logs or screenshots
 
-### 提出新功能
+### Proposing New Features
 
-欢迎提出新功能建议！请通过 [GitHub Issues](../../issues) 提交，并说明：
+New feature suggestions are welcome! Please submit via [GitHub Issues](../../issues) and include:
 
-1. 功能描述
-2. 使用场景
-3. 可能的实现思路
+1. Feature description
+2. Use cases
+3. Possible implementation ideas
 
-### 提交代码
+### Submitting Code
 
-1. Fork 本仓库
-2. 创建功能分支：`git checkout -b feature/your-feature-name`
-3. 进行代码修改
-4. 确保代码风格一致
-5. 提交更改：`git commit -m 'Add some feature'`
-6. 推送分支：`git push origin feature/your-feature-name`
-7. 提交 Pull Request
+1. Fork this repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Make your code changes
+4. Ensure code style consistency
+5. Commit changes: `git commit -m 'Add some feature'`
+6. Push branch: `git push origin feature/your-feature-name`
+7. Submit a Pull Request
 
-## 代码规范
+## Code Standards
 
-### Python 代码风格
+### Python Code Style
 
-- 遵循 PEP 8 编码规范
-- 使用 4 空格缩进
-- 函数和类添加文档字符串
-- 变量命名使用 snake_case，类命名使用 PascalCase
+- Follow PEP 8 coding conventions
+- Use 4 spaces for indentation
+- Add docstrings to functions and classes
+- Use snake_case for variables, PascalCase for classes
 
-### 提交信息规范
+### Commit Message Standards
 
-- 使用简洁明了的提交信息
-- 建议格式：`<type>: <description>`
-- 类型包括：`feat`（新功能）、`fix`（修复）、`docs`（文档）、`refactor`（重构）、`test`（测试）
+- Use clear and concise commit messages
+- Recommended format: `<type>: <description>`
+- Types include: `feat` (new feature), `fix` (bug fix), `docs` (documentation), `refactor` (refactoring), `test` (testing)
 
-## 开发环境设置
+## Development Environment Setup
 
 ```bash
-# 克隆仓库
+# Clone repository
 git clone https://github.com/your-username/survey-dsp.git
 cd survey-dsp
 
-# 创建虚拟环境
+# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# 或 venv\Scripts\activate  # Windows
+# or venv\Scripts\activate  # Windows
 
-# 安装依赖
+# Install dependencies
 pip install -r requirements.txt
 
-# 运行测试
+# Run tests
 python test_all_modules.py
 
-# 启动应用
+# Launch application
 python run_ui.py
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 survey-dsp/
-├── common/           # 通用组件（日志、解析器、矩阵引擎等）
-├── module1_IDW/      # IDW 插值模块
-├── module2_GPS_Elevation/  # GPS 高程拟合模块
-├── module3_TimeSystem/     # 时间系统转换模块
-├── module4_Area/     # 面积计算模块
-├── module5_Cord/     # 坐标转换模块
-├── module6_Slide/    # 滑坡监测模块
-├── ui/               # 用户界面
-├── test_data/        # 测试数据
-└── logs/             # 日志目录
+├── common/           # Common components (logger, parser, matrix engine, etc.)
+├── module1_IDW/      # IDW interpolation module
+├── module2_GPS_Elevation/  # GPS elevation fitting module
+├── module3_TimeSystem/     # Time system conversion module
+├── module4_Area/     # Area calculation module
+├── module5_Cord/     # Coordinate transformation module
+├── module6_Slide/    # Landslide monitoring module
+├── ui/               # User interface
+├── test_data/        # Test data
+└── logs/             # Log directory
 ```
 
-## 联系方式
+## Contact
 
-如有问题，请联系维护者：erichestein
+If you have questions, please contact the maintainer: erichestein
 
 ---
 
-再次感谢你的贡献！
+Thank you again for your contribution!

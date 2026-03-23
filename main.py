@@ -10,7 +10,7 @@
 - 模块5：坐标转换
 - 模块6：滑坡监测
 
-作者：SurveyDSP Team
+作者：erichestein
 版本：1.0.1
 """
 

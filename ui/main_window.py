@@ -1,5 +1,5 @@
 """
-主窗口
+Main Window
 """
 
 import sys
@@ -8,10 +8,10 @@ from typing import Dict, Optional
 
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QStackedWidget, 
-    QStatusBar, QMessageBox, QApplication
+    QStatusBar, QMessageBox, QApplication, QMenu, QMenuBar
 )
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtGui import QIcon, QAction, QActionGroup
 
 from .sidebar import SidebarWidget
 from .module_widgets import (
@@ -22,18 +22,21 @@ from .module_widgets import (
     CoordTransformWidget,
     LandslideMonitorWidget
 )
+from common.i18n import get_i18n_manager, tr
 
 
 class MainWindow(QMainWindow):
-    """主窗口"""
+    """Main Window"""
     
     def __init__(self):
         super().__init__()
         self.module_widgets: Dict[str, Optional[QWidget]] = {}
+        self.i18n = get_i18n_manager()
         self._init_ui()
+        self._connect_signals()
     
     def _init_ui(self):
-        self.setWindowTitle("测绘综合实习DSP系统")
+        self.setWindowTitle(tr("app.title"))
         self.setMinimumSize(1200, 800)
         self.resize(1400, 900)
         
@@ -55,7 +58,7 @@ class MainWindow(QMainWindow):
         
         self._create_module_widgets()
         
-        self.statusBar().showMessage("就绪")
+        self.statusBar().showMessage(tr("status.ready"))
         
         self._create_menu()
         
@@ -69,8 +72,27 @@ class MainWindow(QMainWindow):
             }
         """)
     
+    def _connect_signals(self):
+        """Connect i18n signals"""
+        self.i18n.language_changed.connect(self._on_language_changed)
+    
+    def _on_language_changed(self, lang_code: str):
+        """Handle language change"""
+        self._update_ui_texts()
+        self.i18n.save_preference(lang_code)
+    
+    def _update_ui_texts(self):
+        """Update all UI texts after language change"""
+        self.setWindowTitle(tr("app.title"))
+        self.statusBar().showMessage(tr("status.ready"))
+        self._update_menu_texts()
+        
+        for widget in self.module_widgets.values():
+            if hasattr(widget, 'update_texts'):
+                widget.update_texts()
+    
     def _create_module_widgets(self):
-        """创建模块组件"""
+        """Create module widgets"""
         self.module_widgets['module1'] = IDWWidget()
         self.module_widgets['module2'] = ElevationFittingWidget()
         self.module_widgets['module3'] = TimeSystemWidget()
@@ -84,36 +106,78 @@ class MainWindow(QMainWindow):
         self.content_stack.setCurrentWidget(self.module_widgets['module1'])
     
     def _create_menu(self):
-        """创建菜单栏"""
+        """Create menu bar"""
         menubar = self.menuBar()
         
-        file_menu = menubar.addMenu("文件")
+        self.file_menu = menubar.addMenu(tr("menu.file"))
         
-        exit_action = QAction("退出", self)
-        exit_action.setShortcut("Ctrl+Q")
-        exit_action.triggered.connect(self.close)
-        file_menu.addAction(exit_action)
+        self.exit_action = QAction(tr("menu.file.exit"), self)
+        self.exit_action.setShortcut("Ctrl+Q")
+        self.exit_action.triggered.connect(self.close)
+        self.file_menu.addAction(self.exit_action)
         
-        help_menu = menubar.addMenu("帮助")
+        self.settings_menu = menubar.addMenu(tr("menu.settings"))
         
-        about_action = QAction("关于", self)
-        about_action.triggered.connect(self.show_about)
-        help_menu.addAction(about_action)
+        self.language_menu = self.settings_menu.addMenu(tr("menu.settings.language"))
+        
+        self.lang_action_group = QActionGroup(self)
+        self.lang_action_group.setExclusive(True)
+        
+        for lang_code, lang_name in self.i18n.get_supported_languages().items():
+            action = QAction(lang_name, self)
+            action.setCheckable(True)
+            action.setChecked(lang_code == self.i18n.get_current_language())
+            action.triggered.connect(lambda checked, lc=lang_code: self._change_language(lc))
+            self.lang_action_group.addAction(action)
+            self.language_menu.addAction(action)
+        
+        self.help_menu = menubar.addMenu(tr("menu.help"))
+        
+        self.about_action = QAction(tr("menu.help.about"), self)
+        self.about_action.triggered.connect(self.show_about)
+        self.help_menu.addAction(self.about_action)
+    
+    def _update_menu_texts(self):
+        """Update menu texts after language change"""
+        self.file_menu.setTitle(tr("menu.file"))
+        self.exit_action.setText(tr("menu.file.exit"))
+        self.settings_menu.setTitle(tr("menu.settings"))
+        self.language_menu.setTitle(tr("menu.settings.language"))
+        self.help_menu.setTitle(tr("menu.help"))
+        self.about_action.setText(tr("menu.help.about"))
+        
+        actions = self.lang_action_group.actions()
+        lang_map = self.i18n.get_supported_languages()
+        for action in actions:
+            for lang_code, lang_name in lang_map.items():
+                if action.text() in [lang_name, self._get_old_lang_name(lang_code)]:
+                    action.setText(lang_name)
+                    break
+    
+    def _get_old_lang_name(self, lang_code: str) -> str:
+        """Get old language name for comparison"""
+        old_names = {'en_US': 'English', 'zh_CN': '中文'}
+        return old_names.get(lang_code, lang_code)
+    
+    def _change_language(self, lang_code: str):
+        """Change application language"""
+        self.i18n.set_language(lang_code)
     
     def switch_module(self, module_id: str):
-        """切换模块"""
+        """Switch module"""
         if module_id in self.module_widgets:
             widget = self.module_widgets[module_id]
             self.content_stack.setCurrentWidget(widget)
-            self.statusBar().showMessage(f"当前模块: {widget.module_name}")
+            module_name = widget.module_name if hasattr(widget, 'module_name') else module_id
+            self.statusBar().showMessage(tr("status.current_module").format(module_name))
         else:
-            self.statusBar().showMessage(f"模块 {module_id} 正在开发中...")
+            self.statusBar().showMessage(tr("status.module_developing").format(module_id))
     
     def clear_cache(self):
-        """清理缓存"""
+        """Clear cache"""
         reply = QMessageBox.question(
-            self, "确认清理", 
-            "确定要清理缓存吗？这将释放内存但不会影响已保存的数据。",
+            self, tr("dialog.confirm_clear"), 
+            tr("dialog.confirm_clear_message"),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         
@@ -124,33 +188,33 @@ class MainWindow(QMainWindow):
             
             gc.collect()
             
-            self.statusBar().showMessage("缓存已清理")
-            QMessageBox.information(self, "完成", "缓存清理完成！")
+            self.statusBar().showMessage(tr("status.cache_cleared"))
+            QMessageBox.information(self, tr("dialog.clear_complete"), tr("dialog.clear_complete_message"))
     
     def show_about(self):
-        """显示关于对话框"""
+        """Show about dialog"""
         QMessageBox.about(
-            self, "关于",
-            """<h3>测绘综合实习DSP系统</h3>
-            <p>版本: 1.0.0</p>
-            <p>本系统实现以下DSP算法模块：</p>
+            self, tr("about.title"),
+            f"""<h3>{tr('about.title')}</h3>
+            <p>{tr('about.version')}</p>
+            <p>{tr('about.description')}</p>
             <ul>
-            <li>模块1: IDW插值 (反距离加权)</li>
-            <li>模块2: GPS高程拟合</li>
-            <li>模块3: 时间系统转换</li>
-            <li>模块4: 多边形面积计算</li>
-            <li>模块5: 坐标转换</li>
-            <li>模块6: 滑坡监测</li>
+            <li>{tr('about.module1')}</li>
+            <li>{tr('about.module2')}</li>
+            <li>{tr('about.module3')}</li>
+            <li>{tr('about.module4')}</li>
+            <li>{tr('about.module5')}</li>
+            <li>{tr('about.module6')}</li>
             </ul>
-            <p>使用Python + PyQt6开发</p>
+            <p>{tr('about.tech')}</p>
             """
         )
     
     def closeEvent(self, event):
-        """关闭事件"""
+        """Close event"""
         reply = QMessageBox.question(
-            self, "确认退出",
-            "确定要退出程序吗？",
+            self, tr("dialog.confirm_exit"),
+            tr("dialog.confirm_exit_message"),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         
@@ -161,9 +225,15 @@ class MainWindow(QMainWindow):
 
 
 def run_app():
-    """运行应用程序"""
+    """Run application"""
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
+    
+    i18n = get_i18n_manager()
+    i18n.set_app(app)
+    
+    saved_lang = i18n.load_preference()
+    i18n.set_language(saved_lang)
     
     app.setStyleSheet("""
         QToolTip {
