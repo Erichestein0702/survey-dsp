@@ -1,166 +1,166 @@
-# 测绘综合实习 - DSP数据处理平台
+# Survey DSP - Data Processing Platform
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
-## 一、这是什么？
+## 1. What is this?
 
-这是一个专为测绘工程设计的**数据处理平台**。
+This is a **Data Processing Platform** designed specifically for surveying engineering.
 
-**DSP** = Data Surveying Processing（测绘数据处理系统）
+**DSP** = Data Surveying Processing
 
-它把复杂的测绘计算变成了简单的"导入-计算-导出"三步操作，无需编程基础，点点鼠标就能完成专业计算。
+It transforms complex surveying calculations into a simple "Import-Calculate-Export" three-step workflow. No programming skills required - just click your way through professional calculations.
 
-### 6大核心功能
+### 6 Core Modules
 
-| 功能模块 | 解决什么问题 | 典型应用场景 |
-|---------|-------------|-------------|
-| **IDW插值** | 已知点推算未知点 | 根据控制点高程推算待测点高程，支持n=4,5,6对比分析 |
-| **GPS高程拟合** | 建立高程异常模型 | 利用已知点拟合区域高程变化规律，三种方法对比选最优 |
-| **时间系统转换** | 时间格式统一 | GPS时间、公历、儒略日、年积日互转，支持文件批量处理 |
-| **多边形面积** | 计算封闭区域面积 | 使用海伦公式计算三角形面积并汇总 |
-| **坐标转换** | 坐标系统转换 | XYZ空间坐标与经纬度互转，支持多种椭球参数 |
-| **滑坡监测** | 变形趋势分析 | 多期监测数据二维变形分析，计算变形速度和应变 |
-
----
-
-## 二、为什么要做这个？
-
-### 传统方式的痛点
-
-测绘工作中经常需要处理大量数据：
-- 已知点数据需要推算未知点
-- 不同坐标系统需要相互转换
-- 监测数据需要分析变形趋势
-- 时间格式需要统一转换
-
-传统做法是**手动计算**或使用**分散的工具**，存在以下问题：
-- 计算过程繁琐，容易出错
-- 不同功能需要切换不同软件
-- 数据格式不统一，转换麻烦
-- 结果难以保存和分享
-
-### 这个平台的优势
-
-| 对比项 | 传统方式 | 本平台 |
-|-------|---------|-------|
-| 操作方式 | 手动计算/多软件切换 | 一站式操作 |
-| 出错风险 | 高（人工计算） | 低（自动计算） |
-| 数据格式 | 各软件不统一 | 统一格式规范 |
-| 结果保存 | 需手动整理 | 一键导出报告 |
-| 学习成本 | 需掌握多个工具 | 界面直观易上手 |
+| Module | Problem Solved | Typical Use Cases |
+|--------|----------------|-------------------|
+| **IDW Interpolation** | Estimate unknown points from known points | Calculate elevation of points to be surveyed from control points, supports n=4,5,6 comparative analysis |
+| **GPS Elevation Fitting** | Build height anomaly models | Fit regional elevation variation patterns using known points, compare three methods to select the optimal one |
+| **Time System Conversion** | Unify time formats | Convert between GPS time, Gregorian calendar, Julian day, and day of year; supports batch file processing |
+| **Polygon Area** | Calculate enclosed area | Calculate triangle areas using Heron's formula and summarize |
+| **Coordinate Transformation** | Convert between coordinate systems | Convert between XYZ spatial coordinates and latitude/longitude, supports multiple ellipsoid parameters |
+| **Landslide Monitoring** | Deformation trend analysis | Two-dimensional deformation analysis with multi-period monitoring data, calculate deformation velocity and strain |
 
 ---
 
-## 三、怎么用？
+## 2. Why build this?
 
-### 第一步：安装环境
+### Pain Points of Traditional Methods
 
-1. 确保电脑已安装 **Python 3.8 或更高版本**
-2. 打开命令行，进入项目目录
-3. 安装依赖包：
+Surveying work often requires processing large amounts of data:
+- Known point data needs to estimate unknown points
+- Different coordinate systems need to be converted
+- Monitoring data needs deformation trend analysis
+- Time formats need unified conversion
+
+Traditional approaches involve **manual calculation** or using **scattered tools**, which have the following issues:
+- Calculation process is tedious and error-prone
+- Different functions require switching between different software
+- Data formats are inconsistent, conversion is troublesome
+- Results are difficult to save and share
+
+### Advantages of This Platform
+
+| Comparison | Traditional Method | This Platform |
+|------------|-------------------|---------------|
+| Operation Mode | Manual calculation / Multiple software switching | One-stop operation |
+| Error Risk | High (manual calculation) | Low (automatic calculation) |
+| Data Format | Inconsistent across software | Unified format standards |
+| Result Saving | Manual organization required | One-click export report |
+| Learning Curve | Need to master multiple tools | Intuitive interface, easy to get started |
+
+---
+
+## 3. How to use?
+
+### Step 1: Install Environment
+
+1. Make sure **Python 3.8 or higher** is installed
+2. Open command line, navigate to project directory
+3. Install dependencies:
    ```
    pip install -r requirements.txt
    ```
 
-### 第二步：启动程序
+### Step 2: Launch Program
 
-在项目目录下运行：
+Run in the project directory:
 ```
 python run_ui.py
 ```
 
-程序启动后会显示主界面，左侧是功能导航栏，右侧是操作区域。
+After launch, the main interface will display with a navigation sidebar on the left and operation area on the right.
 
-### 第三步：导入数据
+### Step 3: Import Data
 
-界面操作逻辑：
+Interface operation logic:
 
-| 按钮 | 功能 |
-|-----|------|
-| **浏览** | 选择文件，自动填入路径 |
-| **加载** | 根据路径框中的路径加载数据 |
-| **手动输入** | 不依赖文件，直接输入数据 |
+| Button | Function |
+|--------|----------|
+| **Browse** | Select file, automatically fill in path |
+| **Load** | Load data based on the path in the path field |
+| **Manual Input** | Input data directly without file dependency |
 
-> **提示**：导入和加载是分开的。先用"浏览"选文件，再用"加载"显示数据。这样方便修改路径或重复加载。
+> **Tip**: Import and Load are separate operations. First use "Browse" to select a file, then use "Load" to display data. This makes it easy to modify paths or reload data.
 
-### 第四步：计算并导出
+### Step 4: Calculate and Export
 
-1. 点击**开始计算**
-2. 查看计算结果和图形
-3. 使用导出按钮保存结果：
+1. Click **Start Calculation**
+2. View calculation results and graphics
+3. Use export buttons to save results:
 
-| 导出格式 | 用途 |
-|---------|------|
-| **Markdown** | 生成计算报告，适合存档和分享 |
-| **CSV** | 导出原始数据，适合Excel处理 |
-| **图形** | 保存可视化结果，适合报告插图 |
-
----
-
-## 数据格式要求
-
-详细的格式说明请参阅 [导入文件格式要求.md](./导入文件格式要求.md)
-
-**基本原则**：
-- 文本文件：每行一条记录，字段用空格分隔
-- Excel文件：第一行为列名，列名需符合要求
-- 支持注释行：以 `#` 开头的行会被忽略
+| Export Format | Purpose |
+|---------------|---------|
+| **Markdown** | Generate calculation report, suitable for archiving and sharing |
+| **CSV** | Export raw data, suitable for Excel processing |
+| **Image** | Save visualization results, suitable for report illustrations |
 
 ---
 
-## 常见问题
+## Data Format Requirements
 
-### Q: 程序启动后闪退怎么办？
-A: 请检查是否正确安装了所有依赖包，运行 `pip install -r requirements.txt` 重新安装。
+For detailed format specifications, please refer to [Data Import Format Requirements](./导入文件格式要求.md)
 
-### Q: 导入数据后显示空白？
-A: 请检查数据格式是否符合要求，参考"导入文件格式要求.md"文档。
-
-### Q: 计算结果异常？
-A: 请检查输入数据是否正确，特别是坐标单位（度/弧度）和高程单位（米）。
-
-### Q: 如何查看计算过程的详细信息？
-A: 日志文件位于 `logs/` 目录，记录了所有操作和错误信息，便于排查问题。
+**Basic Principles**:
+- Text files: One record per line, fields separated by spaces
+- Excel files: First row contains column headers, headers must meet requirements
+- Comment lines supported: Lines starting with `#` will be ignored
 
 ---
 
-## 目录说明
+## FAQ
+
+### Q: Program crashes immediately after launch?
+A: Please check if all dependencies are correctly installed. Run `pip install -r requirements.txt` to reinstall.
+
+### Q: Blank display after importing data?
+A: Please check if the data format meets requirements. Refer to the "Data Import Format Requirements" document.
+
+### Q: Abnormal calculation results?
+A: Please verify input data is correct, especially coordinate units (degrees/radians) and elevation units (meters).
+
+### Q: How to view detailed calculation process information?
+A: Log files are located in the `logs/` directory, recording all operations and error information for troubleshooting.
+
+---
+
+## Directory Structure
 
 ```
 SurveyDSP/
-├── common/                 # 通用组件
-├── logs/                   # 日志目录（记录操作和错误）
-├── module1_IDW/            # IDW插值模块
-├── module2_GPS_Elevation/  # GPS高程拟合模块
-├── module3_TimeSystem/     # 时间系统转换模块
-├── module4_Area/           # 多边形面积模块
-├── module5_Cord/           # 坐标转换模块
-├── module6_Slide/          # 滑坡监测模块
-├── reports/                # 报告输出目录
-├── test_data/              # 测试数据（可直接使用）
-├── ui/                     # 界面组件
-├── run_ui.py               # 程序启动入口
-├── ellipsoid_config.json   # 椭球参数配置
-└── 导入文件格式要求.md      # 数据格式说明
+├── common/                 # Common components
+├── logs/                   # Log directory (records operations and errors)
+├── module1_IDW/            # IDW interpolation module
+├── module2_GPS_Elevation/  # GPS elevation fitting module
+├── module3_TimeSystem/     # Time system conversion module
+├── module4_Area/           # Polygon area module
+├── module5_Cord/           # Coordinate transformation module
+├── module6_Slide/          # Landslide monitoring module
+├── reports/                # Report output directory
+├── test_data/              # Test data (ready to use)
+├── ui/                     # UI components
+├── run_ui.py               # Program entry point
+├── ellipsoid_config.json   # Ellipsoid parameter configuration
+└── 导入文件格式要求.md      # Data format specification
 ```
 
 ---
 
-## 许可证
+## License
 
-MIT License - 详见 [LICENSE](LICENSE) 文件
-
----
-
-## 致谢
-
-感谢测绘综合实习指导教师蒲老师的支持与指导！
+MIT License - See [LICENSE](LICENSE) file for details
 
 ---
 
-**版本**: v1.4.0  
-**维护者**: erichestein  
-**更新日期**: 2026-03-13
+## Acknowledgments
+
+Special thanks to Professor Pu, the instructor of the Surveying Comprehensive Practice, for guidance and support!
+
+---
+
+**Version**: v1.4.0  
+**Maintainer**: erichestein  
+**Last Updated**: 2026-03-13
